@@ -1,0 +1,183 @@
+# ==========================================================
+#        SISTEMA DE ANÁLISIS DE VIDEOTECA DIGITAL
+# ==========================================================
+# Autor: Américo José del Guercio Medina
+# Descripción:
+# Este programa permite analizar una videoteca digital y
+# determinar cuántos títulos son considerados populares
+# y recientes, de acuerdo con:
+#
+# 1. Calificación mayor o igual a un valor mínimo.
+# 2. Año de lanzamiento mayor o igual a un año límite.
+#
+# Cada registro de la matriz contiene:
+# [Título, Año de Lanzamiento, Calificación, Género]
+# ==========================================================
+
+
+# ----------------------------------------------------------
+# MATRIZ DE DATOS
+# ----------------------------------------------------------
+# La videoteca contiene información de varias películas.
+# Cada fila representa un título audiovisual.
+# ----------------------------------------------------------
+
+videoteca = [
+    ["Inception", 2010, 8.8, "Ciencia Ficción"],
+    ["Interstellar", 2014, 8.6, "Ciencia Ficción"],
+    ["Parasite", 2019, 8.5, "Drama"],
+    ["Joker", 2019, 8.4, "Drama"],
+    ["Dune", 2021, 8.0, "Aventura"],
+    ["The Batman", 2022, 7.8, "Acción"],
+    ["Avatar: The Way of Water", 2022, 7.6, "Fantasía"],
+    ["Oppenheimer", 2023, 8.7, "Biografía"],
+    ["Spider-Man: Across the Spider-Verse", 2023, 8.6, "Animación"],
+    ["Inside Out 2", 2024, 8.2, "Animación"]
+]
+
+
+# ----------------------------------------------------------
+# FUNCIÓN: MOSTRAR VIDEOTECA COMPLETA
+# ----------------------------------------------------------
+def mostrar_videoteca(matriz):
+    print("\n" + "=" * 85)
+    print("🎬                 CATÁLOGO COMPLETO DE LA VIDEOTECA")
+    print("=" * 85)
+    print(f"{'No.':<5}{'Título':<40}{'Año':<8}{'Calificación':<15}{'Género':<15}")
+    print("-" * 85)
+
+    for i, titulo in enumerate(matriz, start=1):
+        print(
+            f"{i:<5}"
+            f"{titulo[0]:<40}"
+            f"{titulo[1]:<8}"
+            f"{titulo[2]:<15}"
+            f"{titulo[3]:<15}"
+        )
+
+    print("=" * 85)
+
+
+# ----------------------------------------------------------
+# FUNCIÓN: CONTAR TÍTULOS POPULARES Y RECIENTES
+# ----------------------------------------------------------
+def contar_titulos_populares_recientes(matriz, calificacion_minima, anio_limite):
+    contador = 0
+
+    for titulo in matriz:
+        anio = titulo[1]
+        calificacion = titulo[2]
+
+        if calificacion >= calificacion_minima and anio >= anio_limite:
+            contador += 1
+
+    return contador
+
+
+# ----------------------------------------------------------
+# FUNCIÓN: MOSTRAR TÍTULOS QUE CUMPLEN LOS CRITERIOS
+# ----------------------------------------------------------
+def mostrar_titulos_filtrados(matriz, calificacion_minima, anio_limite):
+    print("\n" + "=" * 85)
+    print("⭐           TÍTULOS POPULARES Y RECIENTES ENCONTRADOS")
+    print("=" * 85)
+    print(f"{'Título':<40}{'Año':<8}{'Calificación':<15}{'Género':<15}")
+    print("-" * 85)
+
+    encontrados = False
+
+    for titulo in matriz:
+        if titulo[2] >= calificacion_minima and titulo[1] >= anio_limite:
+            print(
+                f"{titulo[0]:<40}"
+                f"{titulo[1]:<8}"
+                f"{titulo[2]:<15}"
+                f"{titulo[3]:<15}"
+            )
+            encontrados = True
+
+    if not encontrados:
+        print("No se encontraron títulos que cumplan con los criterios.")
+
+    print("=" * 85)
+
+
+# ----------------------------------------------------------
+# FUNCIÓN: SOLICITAR DATOS AL USUARIO
+# ----------------------------------------------------------
+def solicitar_criterios():
+    print("\nIngrese los criterios de búsqueda:\n")
+
+    while True:
+        try:
+            calificacion_minima = float(
+                input("⭐ Calificación mínima (1.0 a 10.0): ")
+            )
+            if 1 <= calificacion_minima <= 10:
+                break
+            else:
+                print("⚠️ La calificación debe estar entre 1 y 10.")
+        except ValueError:
+            print("⚠️ Debe ingresar un número válido.")
+
+    while True:
+        try:
+            anio_limite = int(
+                input("📅 Año mínimo de lanzamiento: ")
+            )
+            if anio_limite > 1900:
+                break
+            else:
+                print("⚠️ Ingrese un año válido.")
+        except ValueError:
+            print("⚠️ Debe ingresar un número entero.")
+
+    return calificacion_minima, anio_limite
+
+
+# ----------------------------------------------------------
+# FUNCIÓN PRINCIPAL
+# ----------------------------------------------------------
+def main():
+    print("\n" + "🎥" * 30)
+    print("      SISTEMA DE ANÁLISIS DE VIDEOTECA DIGITAL")
+    print("🎥" * 30)
+
+    # Mostrar catálogo completo
+    mostrar_videoteca(videoteca)
+
+    # Solicitar criterios al usuario
+    calificacion_minima, anio_limite = solicitar_criterios()
+
+    # Contar títulos que cumplen
+    cantidad = contar_titulos_populares_recientes(
+        videoteca,
+        calificacion_minima,
+        anio_limite
+    )
+
+    # Mostrar títulos encontrados
+    mostrar_titulos_filtrados(
+        videoteca,
+        calificacion_minima,
+        anio_limite
+    )
+
+    # Mostrar resultado final
+    print("\n" + "=" * 85)
+    print("📊 RESULTADO FINAL")
+    print("=" * 85)
+    print(
+        f"Se encontraron {cantidad} título(s) con "
+        f"calificación mayor o igual a {calificacion_minima} "
+        f"y año de lanzamiento mayor o igual a {anio_limite}."
+    )
+    print("=" * 85)
+    print("✅ Proceso finalizado correctamente.\n")
+
+
+# ----------------------------------------------------------
+# EJECUCIÓN DEL PROGRAMA
+# ----------------------------------------------------------
+if __name__ == "__main__":
+    main()  
